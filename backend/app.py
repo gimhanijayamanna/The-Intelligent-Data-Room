@@ -23,7 +23,7 @@ app.config['MAX_CONTENT_LENGTH'] = 10 * 1024 * 1024  # 10MB max file size
 app.config['UPLOAD_FOLDER'] = 'uploads'
 
 # Get API key from environment
-GEMINI_API_KEY = os.getenv('AIzaSyB6HQUM_w1LoVLjcZ3AzGsZByXUi_W4-LU')
+GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
 
 if not GEMINI_API_KEY:
     print("WARNING: GEMINI_API_KEY not found in environment variables!")
