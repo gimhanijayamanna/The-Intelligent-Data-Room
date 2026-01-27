@@ -1,0 +1,231 @@
+/* App.css - Main application styles */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background: linear-gradient(135deg, #c5a5d8 0%, #e8b5a8 50%, #a8b8e8 100%);
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    min-height: 100vh;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('data:image/svg+xml,<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23c5a5d8;stop-opacity:0.8" /><stop offset="50%" style="stop-color:%23e8b5a8;stop-opacity:0.8" /><stop offset="100%" style="stop-color:%23a8b8e8;stop-opacity:0.8" /></linearGradient></defs><rect width="100%" height="100%" fill="url(%23grad1)"/></svg>');
+    z-index: -1;
+    pointer-events: none;
+}
+
+.app {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Header */
+.app-header {
+    background: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.header-content {
+    flex: 1;
+}
+
+.app-title {
+    font-size: 28px;
+    color: #2d3748;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.title-icon {
+    font-size: 32px;
+}
+
+.app-subtitle {
+    font-size: 14px;
+    color: #718096;
+    margin: 5px 0 0 44px;
+}
+
+.header-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.header-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: #4299e1;
+    color: white;
+}
+
+.header-button:hover {
+    background: #3182ce;
+    transform: translateY(-2px);
+}
+
+.header-button.danger {
+    background: #e53e3e;
+}
+
+.header-button.danger:hover {
+    background: #c53030;
+}
+
+/* Main Content */
+.app-main {
+    flex: 1;
+    padding: 40px;
+    max-width: 1800px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* Upload Section */
+.upload-section {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+/* Chat Section */
+.chat-section {
+    height: calc(100vh - 200px);
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-grid {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 20px;
+    height: 100%;
+}
+
+.chat-grid:not(:has(.data-sidebar)) {
+    grid-template-columns: 1fr;
+}
+
+.data-sidebar {
+    overflow: hidden;
+}
+
+.chat-main {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow: hidden;
+}
+
+.results-section {
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+/* Footer */
+.app-footer {
+    background: white;
+    padding: 15px 40px;
+    text-align: center;
+    border-top: 1px solid #e2e8f0;
+}
+
+.app-footer p {
+    font-size: 13px;
+    color: #718096;
+    margin: 0;
+}
+
+.app-footer strong {
+    color: #4299e1;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .chat-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .data-sidebar {
+        max-height: 400px;
+    }
+}
+
+@media (max-width: 768px) {
+    .app-header {
+        padding: 15px 20px;
+    }
+
+    .app-title {
+        font-size: 22px;
+    }
+
+    .app-subtitle {
+        font-size: 12px;
+    }
+
+    .app-main {
+        padding: 20px;
+    }
+
+    .header-button {
+        padding: 8px 16px;
+        font-size: 12px;
+    }
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a0aec0;
+}

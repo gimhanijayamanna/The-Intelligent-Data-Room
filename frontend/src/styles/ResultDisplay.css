@@ -1,0 +1,95 @@
+/* Result Display Styles */
+
+.result-display {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.result-header {
+    margin-bottom: 15px;
+}
+
+.result-header h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #2d3748;
+    margin: 0;
+}
+
+.result-content {
+    overflow-x: auto;
+}
+
+.table-container {
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+}
+
+.result-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.result-table thead {
+    background: #edf2f7;
+}
+
+.result-table th {
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+    color: #2d3748;
+    border-bottom: 2px solid #cbd5e0;
+}
+
+.result-table td {
+    padding: 12px;
+    border-bottom: 1px solid #e2e8f0;
+    color: #4a5568;
+}
+
+.result-table tbody tr:hover {
+    background: #f7fafc;
+}
+
+.object-result {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.result-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px;
+    background: #f7fafc;
+    border-radius: 8px;
+}
+
+.result-key {
+    font-weight: 600;
+    color: #4a5568;
+}
+
+.result-value {
+    color: #2d3748;
+    font-weight: 500;
+}
+
+.simple-result {
+    padding: 20px;
+    text-align: center;
+    background: #f7fafc;
+    border-radius: 8px;
+}
+
+.simple-result .result-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: #2d3748;
+}
