@@ -39,4 +39,5 @@ REM Start the backend
 echo Starting Flask backend...
 echo Backend will run on http://localhost:5000
 echo.
+set PYTHONPATH=%CD%
 python backend\app.py

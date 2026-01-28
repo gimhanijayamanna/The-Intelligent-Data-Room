@@ -1,11 +1,10 @@
 /**
  * Data Analysis View Component
- * Shows welcome screen initially, then splits to show agent flow on left and results on right
+ * Shows welcome screen initially, then chat view with execution plan
  */
 
 import React, { useState } from 'react';
 import { Send, Trash2 } from 'lucide-react';
-import AgentFlow from './AgentFlow';
 import Visualization from './Visualization';
 import ResultDisplay from './ResultDisplay';
 import { Message } from '../types';
@@ -130,28 +129,8 @@ const DataAnalysisView: React.FC<DataAnalysisViewProps> = ({
                         </div>
                     </div>
                 ) : (
-                    /* Split View: Agent Flow Left + Chat Right */
-                    <div className="split-view">
-                        {/* Left Side - Agent Communication Flow */}
-                        <aside className="agent-flow-sidebar">
-                            <div className="agent-flow-wrapper">
-                                <h3 className="sidebar-title">Agent Communication</h3>
-                                <div className="agent-flow-content">
-                                    {messages
-                                        .filter((msg) => msg.role === 'assistant' && msg.metadata?.plan)
-                                        .map((msg, index) => (
-                                            <AgentFlow
-                                                key={index}
-                                                plan={msg.metadata?.plan}
-                                                isLoading={false}
-                                            />
-                                        ))}
-                                    {isLoading && <AgentFlow isLoading={true} />}
-                                </div>
-                            </div>
-                        </aside>
-
-                        {/* Right Side - Chat and Results */}
+                    /* Full Width Chat View */
+                    <div className="chat-view">
                         <div className="chat-results-area">
                             <div className="chat-messages-container">
                                 {messages.map((message, index) => (
@@ -160,6 +139,36 @@ const DataAnalysisView: React.FC<DataAnalysisViewProps> = ({
                                             {message.role === 'user' ? '👤' : '🤖'}
                                         </div>
                                         <div className="message-bubble">
+                                            {/* Execution Plan - Collapsible */}
+                                            {message.metadata?.plan && message.role === 'assistant' && (
+                                                <details className="execution-plan">
+                                                    <summary className="plan-summary">
+                                                        🧠 View Execution Plan
+                                                    </summary>
+                                                    <div className="plan-details">
+                                                        <div className="plan-section">
+                                                            <span className="plan-label">Analysis:</span>
+                                                            <span className="plan-value">{message.metadata.plan.question_analysis}</span>
+                                                        </div>
+                                                        <div className="plan-section">
+                                                            <span className="plan-label">Steps:</span>
+                                                            <ol className="plan-steps">
+                                                                {message.metadata.plan.steps?.map((step: string, i: number) => (
+                                                                    <li key={i}>{step}</li>
+                                                                ))}
+                                                            </ol>
+                                                        </div>
+                                                        {message.metadata.plan.reasoning && (
+                                                            <div className="plan-section">
+                                                                <span className="plan-label">Reasoning:</span>
+                                                                <span className="plan-value">{message.metadata.plan.reasoning}</span>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </details>
+                                            )}
+
+                                            {/* Answer Text */}
                                             <p className="message-text">{message.content}</p>
 
                                             {/* Display Result Data */}
@@ -180,7 +189,7 @@ const DataAnalysisView: React.FC<DataAnalysisViewProps> = ({
                                 ))}
 
                                 {isLoading && (
-                                    <div className="chat-message assistant">
+                                    <div className="chat-message assistant-message">
                                         <div className="message-avatar">🤖</div>
                                         <div className="message-bubble loading">
                                             <div className="typing-indicator">
@@ -188,6 +197,7 @@ const DataAnalysisView: React.FC<DataAnalysisViewProps> = ({
                                                 <span></span>
                                                 <span></span>
                                             </div>
+                                            <p className="loading-text">Multi-agent system thinking...</p>
                                         </div>
                                     </div>
                                 )}
