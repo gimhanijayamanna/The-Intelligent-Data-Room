@@ -23,14 +23,9 @@ function App() {
             if (response.success && response.data_info) {
                 setDataInfo(response.data_info);
                 setMessages([]);
-
-                // Show success message
-                alert(`File uploaded successfully! ${response.data_info.rows} rows, ${response.data_info.columns} columns.`);
-            } else {
-                alert(`Upload failed: ${response.error || 'Unknown error'}`);
             }
         } catch (error: any) {
-            alert(`Upload error: ${error.response?.data?.error || error.message}`);
+            console.error('Upload error:', error);
         } finally {
             setIsUploading(false);
         }
@@ -91,14 +86,12 @@ function App() {
     };
 
     const handleClearSession = async () => {
-        if (window.confirm('Are you sure you want to clear the session? This will remove all data and conversation history.')) {
-            try {
-                await apiService.clearSession();
-                setDataInfo(null);
-                setMessages([]);
-            } catch (error: any) {
-                alert(`Error clearing session: ${error.message}`);
-            }
+        try {
+            await apiService.clearSession();
+            setDataInfo(null);
+            setMessages([]);
+        } catch (error: any) {
+            console.error('Error clearing session:', error);
         }
     };
 
