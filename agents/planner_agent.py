@@ -46,45 +46,25 @@ class PlannerAgent:
         # Build context from conversation history
         context = ""
         if conversation_history:
-            context = "Previous conversation:\n"
-            for msg in conversation_history[-5:]:  # Last 5 messages
-                context += f"- {msg['role']}: {msg['content']}\n"
-            context += "\n"
+            for msg in conversation_history[-2:]:
+                context += f"{msg['role']}: {msg['content'][:60]}\n"
         
         # Create the planning prompt
-        prompt = f"""You are an expert data analyst and planning agent. Your role is to analyze user questions about datasets and create detailed execution plans.
+        prompt = f"""Analyze user question and create execution plan.
 
-{context}
-Dataset Schema:
-{json.dumps(data_schema, indent=2)}
+{context}Data Schema: {json.dumps(data_schema)}
+Question: {user_question}
 
-User Question: {user_question}
-
-Your task is to create a detailed execution plan that includes:
-1. Analysis of what the user is asking
-2. Step-by-step plan to answer the question
-3. Determine if visualization is needed (and what type)
-4. Identify required data operations (filtering, grouping, sorting, etc.)
-5. Specify output format expectations
-
-Respond ONLY with valid JSON in this exact format:
+Return JSON only:
 {{
-    "question_analysis": "Brief analysis of what user wants",
+    "question_analysis": "what user wants",
     "requires_visualization": true/false,
     "visualization_type": "bar/line/pie/scatter/none",
-    "steps": [
-        "Step 1: Description",
-        "Step 2: Description"
-    ],
-    "data_operations": [
-        "operation 1",
-        "operation 2"
-    ],
-    "expected_output": "Description of expected result",
-    "reasoning": "Why this plan was chosen"
-}}
-
-Make sure your response is ONLY valid JSON, nothing else."""
+    "steps": ["step 1", "step 2"],
+    "data_operations": ["operation"],
+    "expected_output": "output description",
+    "reasoning": "why this plan"
+}}"""
 
         try:
             # Generate the plan using Gemini

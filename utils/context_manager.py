@@ -12,7 +12,7 @@ class ContextManager:
     Keeps track of the last N messages for context-aware responses.
     """
     
-    def __init__(self, max_history: int = 5):
+    def __init__(self, max_history: int = 2):
         """
         Initialize the Context Manager.
         
@@ -74,10 +74,6 @@ class ContextManager:
             String summary of the conversation
         """
         if not self.history:
-            return "No conversation history"
+            return ""
         
-        summary = []
-        for msg in self.history:
-            summary.append(f"{msg['role'].capitalize()}: {msg['content'][:100]}")
-        
-        return "\n".join(summary)
+        return "\n".join([f"{m['role'][0]}:{m['content'][:40]}" for m in self.history])

@@ -62,57 +62,26 @@ class ExecutorAgent:
         data_info = self._get_data_info()
         
         # Build the execution prompt
-        prompt = f"""You are an expert Python data analyst. You need to write code to answer a user's question about a dataset.
+        prompt = f"""Write Python code to answer the question.
 
-Plan from Planner Agent:
-{json.dumps(plan, indent=2)}
+Plan: {json.dumps(plan)}
+Question: {user_question}
+Data: {data_info}
+Preview:
+{self.current_df.head(3).to_string()}
 
-Original Question: {user_question}
+Requirements:
+- df is loaded dataframe
+- Assign answer to variable 'result'
+- For visualization, assign plotly figure to 'fig'
+- Code must start at column 0
 
-Dataset Information:
-{data_info}
-
-Dataset Preview (first 5 rows):
-{self.current_df.head().to_string()}
-
-Your task is to write Python code that:
-1. Follows the execution plan
-2. Uses pandas to analyze the data (the dataframe is available as 'df')
-3. Returns the result in a structured format
-4. If visualization is needed, generate Plotly chart configuration
-
-CRITICAL CODE REQUIREMENTS:
-- The dataframe is already loaded as 'df'
-- DO NOT use any indentation before import statements
-- Use proper Python indentation (4 spaces)
-- Keep all code at the base indentation level (no leading spaces on first line)
-- For visualizations, use plotly.express or plotly.graph_objects
-- Handle errors gracefully
-
-Respond with valid JSON in this format:
+Return JSON:
 {{
-    "code": "Python code as a string with proper indentation",
-    "explanation": "What the code does",
+    "code": "python code here",
+    "explanation": "brief explanation",
     "returns_visualization": true/false
-}}
-
-The code should assign the final result to a variable called 'result'.
-If creating a visualization, assign the plotly figure to a variable called 'fig'.
-
-Example code structure that MUST start at column 0:
-```python
-import pandas as pd
-import plotly.express as px
-import plotly.graph_objects as go
-
-# Your analysis code here
-result = ...  # The answer to the question
-
-# If visualization needed:
-# fig = px.bar(...)  # or other plotly chart
-```
-
-Respond ONLY with valid JSON, nothing else."""
+}}"""
 
         try:
             # Generate the code using Gemini
@@ -272,13 +241,9 @@ Respond ONLY with valid JSON, nothing else."""
             String description of the dataframe
         """
         if self.current_df is None:
-            return "No data loaded"
+            return "No data"
         
-        info = []
-        info.append(f"Shape: {self.current_df.shape[0]} rows, {self.current_df.shape[1]} columns")
-        info.append(f"Columns: {', '.join(self.current_df.columns.tolist())}")
-        info.append("\nColumn Types:")
-        for col, dtype in self.current_df.dtypes.items():
-            info.append(f"  - {col}: {dtype}")
+        cols = ', '.join(self.current_df.columns.tolist())
+        types = ', '.join([f"{c}: {str(d)}" for c, d in self.current_df.dtypes.items()])
         
-        return "\n".join(info)
+        return f"Shape: {self.current_df.shape[0]} rows x {self.current_df.shape[1]} cols\nColumns: {cols}\nTypes: {types}"
