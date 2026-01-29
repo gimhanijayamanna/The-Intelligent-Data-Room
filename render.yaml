@@ -1,0 +1,31 @@
+services:
+  # Backend Service
+  - type: web
+    name: intelligent-data-room-backend
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn --bind 0.0.0.0:$PORT --timeout 120 backend.app:app
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: GEMINI_API_KEY
+        sync: false  # You'll add this manually in Render dashboard
+    healthCheckPath: /
+
+  # Frontend Service (Static Site)
+  - type: web
+    name: intelligent-data-room-frontend
+    env: static
+    region: oregon
+    plan: free
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: ./frontend/build
+    envVars:
+      - key: REACT_APP_API_URL
+        value: https://intelligent-data-room-backend.onrender.com
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
