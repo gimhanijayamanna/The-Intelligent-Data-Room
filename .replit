@@ -7,5 +7,6 @@ channel = "stable-22_11"
 PYTHONPATH = "$REPL_HOME"
 
 [deployment]
-run = ["sh", "-c", "bash start_replit.sh"]
+build = ["sh", "-c", "pip install -r requirements.txt && cd frontend && npm install && NODE_OPTIONS='--max-old-space-size=2048' GENERATE_SOURCEMAP=false CI=false npm run build"]
+run = ["sh", "-c", "PYTHONPATH=/home/runner/workspace gunicorn --bind=0.0.0.0:5000 --chdir backend app:app"]
 deploymentTarget = "cloudrun"
