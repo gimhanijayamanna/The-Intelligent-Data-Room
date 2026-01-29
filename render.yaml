@@ -2,7 +2,7 @@ services:
   # Backend Service
   - type: web
     name: intelligent-data-room-backend
-    env: python
+    runtime: python
     region: oregon
     plan: free
     buildCommand: pip install -r requirements.txt
@@ -11,21 +11,15 @@ services:
       - key: PYTHON_VERSION
         value: 3.11.0
       - key: GEMINI_API_KEY
-        sync: false  # You'll add this manually in Render dashboard
-    healthCheckPath: /
+        sync: false
 
   # Frontend Service (Static Site)
   - type: web
     name: intelligent-data-room-frontend
-    env: static
+    runtime: static
     region: oregon
     plan: free
     buildCommand: cd frontend && npm install && npm run build
-    staticPublishPath: ./frontend/build
     envVars:
       - key: REACT_APP_API_URL
         value: https://intelligent-data-room-backend.onrender.com
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
